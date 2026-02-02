@@ -17,6 +17,7 @@
             --color-text-secondary: #A1A1A1;
             --color-text-muted: #525252;
             --color-border: rgba(255, 255, 255, 0.1);
+            --color-success: #22c55e;
         }
 
         * {
@@ -365,47 +366,62 @@
             margin-bottom: 1.5rem;
         }
 
-        .specs-grid {
+        /* Tuning Grid */
+        .tuning-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
         }
 
-        .spec-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .spec-label {
+        .tuning-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
+            gap: 0.75rem;
+        }
+
+        .tuning-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .tuning-icon.inactive {
+            background: var(--color-text-muted);
+            opacity: 0.5;
+        }
+
+        .tuning-info {
+            flex: 1;
+        }
+
+        .tuning-label {
+            font-size: 0.65rem;
             color: var(--color-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
         }
 
-        .spec-label i {
-            color: var(--color-primary);
-        }
-
-        .spec-value {
+        .tuning-value {
             font-weight: 700;
-            margin-bottom: 0.25rem;
+            margin-top: 0.125rem;
+            font-size: 0.9rem;
         }
 
-        .spec-bar {
-            height: 4px;
-            background: var(--color-surface-highlight);
-            overflow: hidden;
+        .tuning-value.installed {
+            color: var(--color-success);
         }
 
-        .spec-bar-fill {
-            height: 100%;
-            background: var(--color-primary);
-            width: 0;
-            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+        .tuning-value.not-installed {
+            color: var(--color-text-muted);
         }
 
         .details-grid {
@@ -440,22 +456,29 @@
             justify-content: center;
         }
 
-        /* Admin Panel */
+        /* Admin Toggle Button */
         .admin-toggle {
             position: fixed;
-            bottom: 2rem;
+            bottom: 6rem;
             right: 2rem;
             background: var(--color-primary);
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            font-size: 1.25rem;
-            z-index: 999;
+            font-size: 1.5rem;
+            z-index: 9999;
             transition: transform 0.3s ease, background-color 0.3s ease;
             box-shadow: 0 4px 20px rgba(212, 0, 0, 0.4);
+            display: none;
+        }
+
+        .admin-toggle.visible {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .admin-toggle:hover {
@@ -463,11 +486,95 @@
             background: var(--color-primary-dark);
         }
 
+        /* Login Button */
+        .login-toggle {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            background: var(--color-surface-highlight);
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 9999;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-toggle:hover {
+            transform: scale(1.1);
+            background: var(--color-surface);
+        }
+
+        .login-toggle.hidden {
+            display: none;
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1002;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-modal.active {
+            display: flex;
+        }
+
+        .login-box {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: 3rem;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-title {
+            font-size: 1.75rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: var(--color-text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .login-error {
+            background: rgba(212, 0, 0, 0.1);
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .login-error.visible {
+            display: block;
+        }
+
+        /* Admin Panel */
         .admin-panel {
             position: fixed;
             top: 0;
-            right: -450px;
-            width: 450px;
+            right: -500px;
+            width: 500px;
             height: 100vh;
             background: var(--color-surface);
             border-left: 1px solid var(--color-border);
@@ -496,16 +603,54 @@
             display: block;
         }
 
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
         .admin-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
         }
 
         .admin-subtitle {
             color: var(--color-text-muted);
             font-size: 0.875rem;
-            margin-bottom: 2rem;
+            margin-top: 0.25rem;
+        }
+
+        .admin-close {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .admin-close:hover {
+            color: white;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--color-primary);
+            color: white;
         }
 
         .form-group {
@@ -541,26 +686,71 @@
             color: var(--color-text-muted);
         }
 
+        .form-helper {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            margin-top: 0.25rem;
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
 
-        .admin-close {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: none;
-            border: none;
-            color: var(--color-text-muted);
-            font-size: 1.25rem;
-            cursor: pointer;
-            transition: color 0.3s ease;
+        .form-section-title {
+            color: var(--color-primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin: 1.5rem 0 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
         }
 
-        .admin-close:hover {
+        /* Tuning Checkboxes */
+        .tuning-options {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .tuning-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(0,0,0,0.3);
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .tuning-option-label {
+            flex: 1;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .tuning-select {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--color-border);
             color: white;
+            padding: 0.5rem 0.75rem;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .tuning-select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .tuning-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--color-primary);
+            cursor: pointer;
         }
 
         /* Contact Page Styles */
@@ -680,12 +870,13 @@
             .hero-content { padding: 0 1.5rem; }
             .catalog { padding: 4rem 1.5rem; }
             .vehicle-grid { grid-template-columns: 1fr; }
-            .specs-grid { grid-template-columns: 1fr; }
+            .tuning-grid { grid-template-columns: 1fr; }
             .details-grid { grid-template-columns: repeat(2, 1fr); }
             .admin-panel { width: 100%; right: -100%; }
             .contact-form-grid { grid-template-columns: 1fr; }
             .contact-header { padding: 1rem 1.5rem; }
             .contact-page { padding: 4rem 1.5rem; }
+            .login-box { padding: 2rem; }
         }
     </style>
 </head>
@@ -798,10 +989,10 @@
             <div class="modal-body">
                 <p class="modal-desc" id="modalDesc"></p>
 
-                <h3 class="specs-title">Performance</h3>
-                <div class="specs-grid" id="specsGrid"></div>
+                <h3 class="specs-title">Motor Tuning</h3>
+                <div class="tuning-grid" id="tuningGrid"></div>
 
-                <h3 class="specs-title" style="margin-top: 2rem;">Technical Details</h3>
+                <h3 class="specs-title" style="margin-top: 2rem;">Vehicle Details</h3>
                 <div class="details-grid" id="detailsGrid"></div>
 
                 <button class="btn-primary btn-interested" onclick="interestedInVehicle()" data-testid="interested-btn">
@@ -811,21 +1002,56 @@
         </div>
     </div>
 
-    <!-- Admin Toggle Button -->
-    <button class="admin-toggle" onclick="toggleAdmin()" title="Add Vehicle" data-testid="admin-toggle">
+    <!-- Login Button (shown when not logged in) -->
+    <button class="login-toggle" id="loginToggle" onclick="showLogin()" title="Admin Login" data-testid="login-toggle">
+        <i class="fas fa-lock"></i>
+    </button>
+
+    <!-- Admin Toggle Button (shown when logged in) -->
+    <button class="admin-toggle" id="adminToggle" onclick="toggleAdmin()" title="Add Vehicle" data-testid="admin-toggle">
         <i class="fas fa-plus"></i>
     </button>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-box">
+            <h2 class="login-title font-display">Admin Login</h2>
+            <p class="login-subtitle">Enter your credentials to access the admin panel.</p>
+            <div class="login-error" id="loginError">Invalid username or password</div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="loginUsername" placeholder="Enter username" required data-testid="login-username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter password" required data-testid="login-password">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" data-testid="login-submit">
+                    Login <i class="fas fa-sign-in-alt"></i>
+                </button>
+            </form>
+            <button class="btn-ghost" style="width: 100%; margin-top: 1rem; justify-content: center;" onclick="hideLogin()">Cancel</button>
+        </div>
+    </div>
 
     <!-- Admin Panel Overlay -->
     <div class="admin-panel-overlay" id="adminOverlay" onclick="toggleAdmin()"></div>
 
     <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
-        <button class="admin-close" onclick="toggleAdmin()">
-            <i class="fas fa-times"></i>
-        </button>
-        <h2 class="admin-title font-display">Add Vehicle</h2>
-        <p class="admin-subtitle">Fill in the details to add a new vehicle to the catalog.</p>
+        <div class="admin-header">
+            <div>
+                <h2 class="admin-title font-display">Add Vehicle</h2>
+                <p class="admin-subtitle">Fill in the details to add a new vehicle.</p>
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            <button class="admin-close" onclick="toggleAdmin()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
         
         <form onsubmit="addVehicle(event)" id="addVehicleForm">
             <div class="form-group">
@@ -845,8 +1071,9 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">Image URL *</label>
-                <input type="url" class="form-input" id="vehicleImage" placeholder="https://..." required data-testid="admin-image">
+                <label class="form-label">Image Path *</label>
+                <input type="text" class="form-input" id="vehicleImage" placeholder="/images/vehicles/car1.jpg" required data-testid="admin-image">
+                <p class="form-helper">Upload image to your Render files, then enter the path (e.g., /images/vehicles/mycar.jpg)</p>
             </div>
 
             <div class="form-group">
@@ -854,29 +1081,84 @@
                 <textarea class="form-input" id="vehicleDescription" rows="3" placeholder="Vehicle description..." data-testid="admin-desc"></textarea>
             </div>
 
-            <h3 class="specs-title" style="margin-top: 1.5rem;">Performance Stats (0-100)</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Top Speed</label>
-                    <input type="number" class="form-input" id="specTopSpeed" min="0" max="100" placeholder="90" data-testid="admin-speed">
+            <h3 class="form-section-title">Motor Tuning</h3>
+            
+            <div class="tuning-options">
+                <div class="tuning-option">
+                    <i class="fas fa-engine" style="color: var(--color-primary);"></i>
+                    <span class="tuning-option-label">Engine (EMS)</span>
+                    <select class="tuning-select" id="tuningEngine" data-testid="admin-engine">
+                        <option value="Stock">Stock</option>
+                        <option value="Level 1">Level 1</option>
+                        <option value="Level 2">Level 2</option>
+                        <option value="Level 3">Level 3</option>
+                        <option value="Level 4">Level 4</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Acceleration</label>
-                    <input type="number" class="form-input" id="specAcceleration" min="0" max="100" placeholder="85" data-testid="admin-accel">
+
+                <div class="tuning-option">
+                    <i class="fas fa-wind" style="color: var(--color-primary);"></i>
+                    <span class="tuning-option-label">Turbo</span>
+                    <select class="tuning-select" id="tuningTurbo" data-testid="admin-turbo">
+                        <option value="Not Installed">Not Installed</option>
+                        <option value="Installed">Installed</option>
+                    </select>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Handling</label>
-                    <input type="number" class="form-input" id="specHandling" min="0" max="100" placeholder="88" data-testid="admin-handling">
+
+                <div class="tuning-option">
+                    <i class="fas fa-cogs" style="color: var(--color-primary);"></i>
+                    <span class="tuning-option-label">Transmission</span>
+                    <select class="tuning-select" id="tuningTransmission" data-testid="admin-transmission">
+                        <option value="Stock">Stock</option>
+                        <option value="Street">Street</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Race">Race</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Braking</label>
-                    <input type="number" class="form-input" id="specBraking" min="0" max="100" placeholder="82" data-testid="admin-braking">
+
+                <div class="tuning-option">
+                    <i class="fas fa-compact-disc" style="color: var(--color-primary);"></i>
+                    <span class="tuning-option-label">Brakes</span>
+                    <select class="tuning-select" id="tuningBrakes" data-testid="admin-brakes">
+                        <option value="Stock">Stock</option>
+                        <option value="Street">Street</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Race">Race</option>
+                    </select>
+                </div>
+
+                <div class="tuning-option">
+                    <i class="fas fa-arrows-alt-v" style="color: var(--color-primary);"></i>
+                    <span class="tuning-option-label">Suspension</span>
+                    <select class="tuning-select" id="tuningSuspension" data-testid="admin-suspension">
+                        <option value="Stock">Stock</option>
+                        <option value="Lowered">Lowered</option>
+                        <option value="Street">Street</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Competition">Competition</option>
+                    </select>
+                </div>
+
+                <div class="tuning-option">
+                    <i class="fas fa-fire" style="color: var(--color-primary);"></i>
+                    <span class="tuning-option-label">Nitrous</span>
+                    <select class="tuning-select" id="tuningNitrous" data-testid="admin-nitrous">
+                        <option value="Not Installed">Not Installed</option>
+                        <option value="Installed">Installed</option>
+                    </select>
+                </div>
+
+                <div class="tuning-option">
+                    <i class="fas fa-circle" style="color: var(--color-primary);"></i>
+                    <span class="tuning-option-label">Bulletproof Tires</span>
+                    <select class="tuning-select" id="tuningTires" data-testid="admin-tires">
+                        <option value="Not Installed">Not Installed</option>
+                        <option value="Installed">Installed</option>
+                    </select>
                 </div>
             </div>
 
-            <h3 class="specs-title" style="margin-top: 1.5rem;">Technical Details</h3>
+            <h3 class="form-section-title">Additional Details</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">Poly Count</label>
@@ -893,8 +1175,8 @@
                     <input type="text" class="form-input" id="detailTrunk" placeholder="120" data-testid="admin-trunk">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Handling Profile</label>
-                    <input type="text" class="form-input" id="detailHandlingProfile" placeholder="Sport" data-testid="admin-profile">
+                    <label class="form-label">Top Speed (mph)</label>
+                    <input type="text" class="form-input" id="detailTopSpeed" placeholder="135" data-testid="admin-topspeed">
                 </div>
             </div>
 
@@ -905,6 +1187,10 @@
     </div>
 
     <script>
+        // Admin credentials
+        const ADMIN_USERNAME = 'CenaxDev';
+        const ADMIN_PASSWORD = 'Pass7736';
+
         // Default vehicles data
         const defaultVehicles = [
             {
@@ -914,8 +1200,16 @@
                 price: '$3,465,000',
                 image: 'https://images.unsplash.com/photo-1639176165453-240c09dcf013?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
                 description: 'The Grotti Itali RSX is the pinnacle of Italian engineering. With its sleek aerodynamic design and powerful hybrid engine, this supercar delivers unmatched performance.',
-                specs: { topSpeed: 90, acceleration: 92, handling: 88, braking: 85 },
-                details: { polyCount: '145,000', miles: '2,340', trunkSpace: '120', handlingProfile: 'Sport' }
+                tuning: {
+                    engine: 'Level 4',
+                    turbo: 'Installed',
+                    transmission: 'Race',
+                    brakes: 'Race',
+                    suspension: 'Sports',
+                    nitrous: 'Installed',
+                    bulletproofTires: 'Installed'
+                },
+                details: { polyCount: '145,000', miles: '2,340', trunkSpace: '120', topSpeed: '135' }
             },
             {
                 id: 2,
@@ -924,8 +1218,16 @@
                 price: '$1,329,000',
                 image: 'https://images.pexels.com/photos/3802508/pexels-photo-3802508.jpeg?auto=compress&cs=tinysrgb&w=800',
                 description: 'Raw power meets aggressive styling in the Pegassi Tempesta. This Italian beast features a naturally aspirated V12 that screams to 8,500 RPM.',
-                specs: { topSpeed: 85, acceleration: 95, handling: 82, braking: 78 },
-                details: { polyCount: '132,500', miles: '5,120', trunkSpace: '85', handlingProfile: 'Race' }
+                tuning: {
+                    engine: 'Level 3',
+                    turbo: 'Installed',
+                    transmission: 'Sports',
+                    brakes: 'Sports',
+                    suspension: 'Lowered',
+                    nitrous: 'Not Installed',
+                    bulletproofTires: 'Not Installed'
+                },
+                details: { polyCount: '132,500', miles: '5,120', trunkSpace: '85', topSpeed: '128' }
             },
             {
                 id: 3,
@@ -934,8 +1236,16 @@
                 price: '$1,878,000',
                 image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
                 description: 'German precision meets timeless design. The Pfister Comet S2 offers the perfect balance of everyday usability and track-day performance.',
-                specs: { topSpeed: 82, acceleration: 88, handling: 91, braking: 89 },
-                details: { polyCount: '128,000', miles: '8,750', trunkSpace: '140', handlingProfile: 'Balanced' }
+                tuning: {
+                    engine: 'Level 2',
+                    turbo: 'Not Installed',
+                    transmission: 'Street',
+                    brakes: 'Street',
+                    suspension: 'Stock',
+                    nitrous: 'Not Installed',
+                    bulletproofTires: 'Installed'
+                },
+                details: { polyCount: '128,000', miles: '8,750', trunkSpace: '140', topSpeed: '122' }
             },
             {
                 id: 4,
@@ -944,8 +1254,16 @@
                 price: '$2,305,000',
                 image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
                 description: 'Swedish innovation at its finest. The Överflöd Entity XXR pushes the boundaries of automotive design with its futuristic aesthetics.',
-                specs: { topSpeed: 88, acceleration: 90, handling: 85, braking: 82 },
-                details: { polyCount: '156,000', miles: '1,200', trunkSpace: '60', handlingProfile: 'Sport' }
+                tuning: {
+                    engine: 'Level 4',
+                    turbo: 'Installed',
+                    transmission: 'Race',
+                    brakes: 'Race',
+                    suspension: 'Competition',
+                    nitrous: 'Installed',
+                    bulletproofTires: 'Installed'
+                },
+                details: { polyCount: '156,000', miles: '1,200', trunkSpace: '60', topSpeed: '132' }
             },
             {
                 id: 5,
@@ -954,8 +1272,16 @@
                 price: '$1,535,000',
                 image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
                 description: 'British elegance combined with Le Mans heritage. The Dewbauchee Vagner is a hypercar that dominates corners.',
-                specs: { topSpeed: 84, acceleration: 87, handling: 94, braking: 91 },
-                details: { polyCount: '138,500', miles: '4,500', trunkSpace: '95', handlingProfile: 'Track' }
+                tuning: {
+                    engine: 'Level 3',
+                    turbo: 'Installed',
+                    transmission: 'Sports',
+                    brakes: 'Sports',
+                    suspension: 'Sports',
+                    nitrous: 'Not Installed',
+                    bulletproofTires: 'Not Installed'
+                },
+                details: { polyCount: '138,500', miles: '4,500', trunkSpace: '95', topSpeed: '126' }
             },
             {
                 id: 6,
@@ -964,18 +1290,87 @@
                 price: '$2,325,000',
                 image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
                 description: 'French opulence meets hypercar performance. The Truffade Thrax features a quad-turbocharged W16 engine.',
-                specs: { topSpeed: 87, acceleration: 89, handling: 80, braking: 76 },
-                details: { polyCount: '162,000', miles: '980', trunkSpace: '45', handlingProfile: 'Grand Touring' }
+                tuning: {
+                    engine: 'Level 4',
+                    turbo: 'Installed',
+                    transmission: 'Race',
+                    brakes: 'Race',
+                    suspension: 'Lowered',
+                    nitrous: 'Installed',
+                    bulletproofTires: 'Installed'
+                },
+                details: { polyCount: '162,000', miles: '980', trunkSpace: '45', topSpeed: '130' }
             }
         ];
 
-        // Load vehicles from localStorage or use defaults
+        // State
         let vehicles = JSON.parse(localStorage.getItem('scuderiaVehicles')) || defaultVehicles;
         let currentVehicle = null;
+        let isLoggedIn = sessionStorage.getItem('scuderiaAdmin') === 'true';
+
+        // Initialize
+        function init() {
+            updateAdminButtons();
+            renderVehicles();
+            handleScrollReveal();
+        }
+
+        // Update admin button visibility
+        function updateAdminButtons() {
+            const loginToggle = document.getElementById('loginToggle');
+            const adminToggle = document.getElementById('adminToggle');
+            
+            if (isLoggedIn) {
+                loginToggle.classList.add('hidden');
+                adminToggle.classList.add('visible');
+            } else {
+                loginToggle.classList.remove('hidden');
+                adminToggle.classList.remove('visible');
+            }
+        }
 
         // Save vehicles to localStorage
         function saveVehicles() {
             localStorage.setItem('scuderiaVehicles', JSON.stringify(vehicles));
+        }
+
+        // Show login modal
+        function showLogin() {
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('loginUsername').focus();
+        }
+
+        // Hide login modal
+        function hideLogin() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('loginError').classList.remove('visible');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        // Handle login
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                isLoggedIn = true;
+                sessionStorage.setItem('scuderiaAdmin', 'true');
+                hideLogin();
+                updateAdminButtons();
+                toggleAdmin();
+            } else {
+                document.getElementById('loginError').classList.add('visible');
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            isLoggedIn = false;
+            sessionStorage.removeItem('scuderiaAdmin');
+            toggleAdmin();
+            updateAdminButtons();
         }
 
         // Render vehicle grid
@@ -990,7 +1385,7 @@
                 card.onclick = () => openModal(vehicle);
                 card.innerHTML = `
                     <div class="vehicle-card-img-wrapper">
-                        <img src="${vehicle.image}" alt="${vehicle.name}" class="vehicle-card-img">
+                        <img src="${vehicle.image}" alt="${vehicle.name}" class="vehicle-card-img" onerror="this.src='https://via.placeholder.com/400x250?text=Image+Not+Found'">
                     </div>
                     <div class="vehicle-card-info">
                         <p class="vehicle-card-category">${vehicle.category}</p>
@@ -1000,11 +1395,43 @@
                 `;
                 grid.appendChild(card);
 
-                // Animate in with delay
                 setTimeout(() => {
                     card.classList.add('visible');
                 }, 100 * index);
             });
+        }
+
+        // Get tuning icon
+        function getTuningIcon(type) {
+            const icons = {
+                engine: 'fa-gear',
+                turbo: 'fa-wind',
+                transmission: 'fa-cogs',
+                brakes: 'fa-compact-disc',
+                suspension: 'fa-arrows-alt-v',
+                nitrous: 'fa-fire',
+                bulletproofTires: 'fa-circle'
+            };
+            return icons[type] || 'fa-wrench';
+        }
+
+        // Get tuning display name
+        function getTuningName(type) {
+            const names = {
+                engine: 'Engine (EMS)',
+                turbo: 'Turbo',
+                transmission: 'Transmission',
+                brakes: 'Brakes',
+                suspension: 'Suspension',
+                nitrous: 'Nitrous',
+                bulletproofTires: 'Bulletproof Tires'
+            };
+            return names[type] || type;
+        }
+
+        // Check if tuning is installed/upgraded
+        function isTuningActive(value) {
+            return value && value !== 'Stock' && value !== 'Not Installed';
         }
 
         // Open modal
@@ -1016,61 +1443,55 @@
             document.getElementById('modalPrice').textContent = vehicle.price;
             document.getElementById('modalDesc').textContent = vehicle.description || 'No description available.';
 
-            // Render specs
-            const specsGrid = document.getElementById('specsGrid');
-            specsGrid.innerHTML = `
-                <div class="spec-item">
-                    <div class="spec-label"><i class="fas fa-tachometer-alt"></i> Top Speed</div>
-                    <div class="spec-value">${vehicle.specs?.topSpeed || 0}%</div>
-                    <div class="spec-bar"><div class="spec-bar-fill" data-value="${vehicle.specs?.topSpeed || 0}"></div></div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-label"><i class="fas fa-bolt"></i> Acceleration</div>
-                    <div class="spec-value">${vehicle.specs?.acceleration || 0}%</div>
-                    <div class="spec-bar"><div class="spec-bar-fill" data-value="${vehicle.specs?.acceleration || 0}"></div></div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-label"><i class="fas fa-steering-wheel"></i> Handling</div>
-                    <div class="spec-value">${vehicle.specs?.handling || 0}%</div>
-                    <div class="spec-bar"><div class="spec-bar-fill" data-value="${vehicle.specs?.handling || 0}"></div></div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-label"><i class="fas fa-stop-circle"></i> Braking</div>
-                    <div class="spec-value">${vehicle.specs?.braking || 0}%</div>
-                    <div class="spec-bar"><div class="spec-bar-fill" data-value="${vehicle.specs?.braking || 0}"></div></div>
-                </div>
+            // Render tuning
+            const tuningGrid = document.getElementById('tuningGrid');
+            const tuning = vehicle.tuning || {};
+            tuningGrid.innerHTML = `
+                ${Object.entries({
+                    engine: tuning.engine || 'Stock',
+                    turbo: tuning.turbo || 'Not Installed',
+                    transmission: tuning.transmission || 'Stock',
+                    brakes: tuning.brakes || 'Stock',
+                    suspension: tuning.suspension || 'Stock',
+                    nitrous: tuning.nitrous || 'Not Installed',
+                    bulletproofTires: tuning.bulletproofTires || 'Not Installed'
+                }).map(([key, value]) => `
+                    <div class="tuning-item">
+                        <div class="tuning-icon ${isTuningActive(value) ? '' : 'inactive'}">
+                            <i class="fas ${getTuningIcon(key)}"></i>
+                        </div>
+                        <div class="tuning-info">
+                            <p class="tuning-label">${getTuningName(key)}</p>
+                            <p class="tuning-value ${isTuningActive(value) ? 'installed' : 'not-installed'}">${value}</p>
+                        </div>
+                    </div>
+                `).join('')}
             `;
 
             // Render details
             const detailsGrid = document.getElementById('detailsGrid');
+            const details = vehicle.details || {};
             detailsGrid.innerHTML = `
                 <div class="detail-box">
                     <p class="detail-label">Poly Count</p>
-                    <p class="detail-value">${vehicle.details?.polyCount || 'N/A'}</p>
+                    <p class="detail-value">${details.polyCount || 'N/A'}</p>
                 </div>
                 <div class="detail-box">
                     <p class="detail-label">Miles</p>
-                    <p class="detail-value">${vehicle.details?.miles || 'N/A'} mi</p>
+                    <p class="detail-value">${details.miles || 'N/A'} mi</p>
                 </div>
                 <div class="detail-box">
                     <p class="detail-label">Trunk Space</p>
-                    <p class="detail-value">${vehicle.details?.trunkSpace || 'N/A'} kg</p>
+                    <p class="detail-value">${details.trunkSpace || 'N/A'} kg</p>
                 </div>
                 <div class="detail-box">
-                    <p class="detail-label">Handling</p>
-                    <p class="detail-value">${vehicle.details?.handlingProfile || 'N/A'}</p>
+                    <p class="detail-label">Top Speed</p>
+                    <p class="detail-value">${details.topSpeed || 'N/A'} mph</p>
                 </div>
             `;
 
             document.getElementById('vehicleModal').classList.add('active');
             document.body.style.overflow = 'hidden';
-
-            // Animate spec bars
-            setTimeout(() => {
-                document.querySelectorAll('.spec-bar-fill').forEach(bar => {
-                    bar.style.width = bar.dataset.value + '%';
-                });
-            }, 100);
         }
 
         // Close modal
@@ -1121,6 +1542,10 @@
 
         // Toggle admin panel
         function toggleAdmin() {
+            if (!isLoggedIn) {
+                showLogin();
+                return;
+            }
             document.getElementById('adminPanel').classList.toggle('active');
             document.getElementById('adminOverlay').classList.toggle('active');
         }
@@ -1136,17 +1561,20 @@
                 price: document.getElementById('vehiclePrice').value,
                 image: document.getElementById('vehicleImage').value,
                 description: document.getElementById('vehicleDescription').value || '',
-                specs: {
-                    topSpeed: parseInt(document.getElementById('specTopSpeed').value) || 80,
-                    acceleration: parseInt(document.getElementById('specAcceleration').value) || 80,
-                    handling: parseInt(document.getElementById('specHandling').value) || 80,
-                    braking: parseInt(document.getElementById('specBraking').value) || 80
+                tuning: {
+                    engine: document.getElementById('tuningEngine').value,
+                    turbo: document.getElementById('tuningTurbo').value,
+                    transmission: document.getElementById('tuningTransmission').value,
+                    brakes: document.getElementById('tuningBrakes').value,
+                    suspension: document.getElementById('tuningSuspension').value,
+                    nitrous: document.getElementById('tuningNitrous').value,
+                    bulletproofTires: document.getElementById('tuningTires').value
                 },
                 details: {
                     polyCount: document.getElementById('detailPolyCount').value || 'N/A',
                     miles: document.getElementById('detailMiles').value || 'N/A',
                     trunkSpace: document.getElementById('detailTrunk').value || 'N/A',
-                    handlingProfile: document.getElementById('detailHandlingProfile').value || 'N/A'
+                    topSpeed: document.getElementById('detailTopSpeed').value || 'N/A'
                 }
             };
 
@@ -1156,7 +1584,6 @@
             toggleAdmin();
             document.getElementById('addVehicleForm').reset();
             
-            // Scroll to catalog
             document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -1167,17 +1594,25 @@
             }
         });
 
-        // Close modal on Escape key
+        // Close login modal on backdrop click
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideLogin();
+            }
+        });
+
+        // Close on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
+                hideLogin();
                 if (document.getElementById('adminPanel').classList.contains('active')) {
                     toggleAdmin();
                 }
             }
         });
 
-        // Scroll reveal animation
+        //Scroll reveal animation
         function handleScrollReveal() {
             const cards = document.querySelectorAll('.vehicle-card:not(.visible)');
             cards.forEach(card => {
@@ -1190,11 +1625,9 @@
 
         window.addEventListener('scroll', handleScrollReveal);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            renderVehicles();
-            handleScrollReveal();
-        });
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
+
